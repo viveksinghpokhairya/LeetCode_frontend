@@ -13,7 +13,6 @@ export const registerUser = createAsyncThunk(
     }
 );
 
-
 export const loginUser = createAsyncThunk(
     'auth/login',
     async (credentials, { rejectWithValue }) => {
@@ -42,14 +41,12 @@ export const checkAuth = createAsyncThunk(
     }
 );
 
-
-
-
 export const logoutUser = createAsyncThunk(
     'auth/logout',
     async (_, { rejectWithValue }) => {
         try {
-            await axiosClient.post('/logout');
+            console.log("logout user called")
+            await axiosClient.post('/user/logout', {});
             return null;
         } catch (error) {
             return rejectWithValue(error);

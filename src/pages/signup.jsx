@@ -3,26 +3,30 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
-import { useNavigate, useSearchParams } from "react-router";
-import { useSelector } from "react-redux";
-import {registerUser} from "../slicers/slice"
+import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { Eye, EyeOff } from "lucide-react"; 
+import { registerUser } from "../slicers/slice";
+import { Link } from "react-router";
 
 const signupSchema = z.object({
-  firstName: z.string().min(3, "Name should be at least 3 characters long"),
-  emailId: z.string().email("Invalid email"),
+  name: z.string().min(3, "Name should be at least 3 characters long"),
+  email: z.string().email("Invalid email"),
   password: z.string().min(8, "Password should be at least 8 characters long"),
 });
 
 function SignUp() {
+  const dispatch = useDispatch();
   const [passwordStrength, setPasswordStrength] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const {isAuthenticated, loading, error} = useSelector((state) => state.auth);
+  const { isAuthenticated, loading } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if(isAuthenticated){
-      navigate("/")
+    if (isAuthenticated) {
+      navigate("/");
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated, navigate]);
 
   const {
     register,
@@ -43,25 +47,25 @@ function SignUp() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-white via-gray-700 to-purple-950">
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
+        initial={{ opacity: 0, scale: 0.7 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6 }}
-        className="w-[380px] backdrop-blur-xl bg-white/10 border border-white/20 shadow-2xl rounded-2xl p-6"
+        className="w-[400px] backdrop-blur-xl bg-white/10 border border-white/20 shadow-2xl rounded-2xl p-6"
       >
         <h1 className="text-3xl font-bold text-white text-center mb-6">
           LeetCode
         </h1>
 
         <form
-          onSubmit={handleSubmit((data) => registerUser(data))}
+          onSubmit={handleSubmit((data) => dispatch(registerUser(data)))}
           className="flex flex-col space-y-4"
         >
           {/* First Name */}
           <div>
             <input
-              {...register("firstName")}
+              {...register("name")}
               placeholder="First Name"
               className="w-full px-4 py-2 rounded-xl bg-white/20 text-white placeholder-gray-300 outline-none focus:ring-2 focus:ring-indigo-400"
             />
@@ -75,7 +79,7 @@ function SignUp() {
           {/* Email */}
           <div>
             <input
-              {...register("emailId")}
+              {...register("email")}
               placeholder="Email"
               className="w-full px-4 py-2 rounded-xl bg-white/20 text-white placeholder-gray-300 outline-none focus:ring-2 focus:ring-indigo-400"
             />
@@ -87,14 +91,23 @@ function SignUp() {
           </div>
 
           {/* Password */}
-          <div>
+          <div className="relative">
             <input
               {...register("password")}
-              type="password"
+              type={showPassword ? "text" : "password"} // 👈 toggle type
               placeholder="Password"
               onChange={(e) => checkStrength(e.target.value)}
-              className="w-full px-4 py-2 rounded-xl bg-white/20 text-white placeholder-gray-300 outline-none focus:ring-2 focus:ring-indigo-400"
+              className="w-full px-4 py-2 pr-10 rounded-xl bg-white/20 text-white placeholder-gray-300 outline-none focus:ring-2 focus:ring-indigo-400"
             />
+            {/* Eye Toggle */}
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-3 top-2.5 text-gray-300 hover:text-white"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+
             {errors.password && (
               <p className="text-red-400 text-sm mt-1">
                 {errors.password.message}
@@ -118,15 +131,17 @@ function SignUp() {
           {/* Submit */}
           <button
             type="submit"
+            disabled={loading}
             className="mt-4 w-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-xl py-2 shadow-lg transition"
           >
             Sign Up
           </button>
         </form>
-        <div className="flex justify-between text-sm text-gray-300 mt-4">
-          <a href="/login" className="hover:underline">
+        <div className="flex text-sm text-gray-300 mt-4 gap-2">
+          <span>already have an account?</span>
+          <Link to="/login" className="hover:underline">
             Sign In
-          </a>
+          </Link>
         </div>
       </motion.div>
     </div>
