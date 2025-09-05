@@ -6,16 +6,17 @@ import QuestionCreation from "./pages/questionCreation";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { checkAuth } from "./slicers/slice";
-import  Admin from "./pages/Admin";
+import Admin from "./pages/Admin";
 import ProblemPage from "./pages/problemPage";
-import DeleteQuestion from "./components/deleteQuestion"
-
-
+import DeleteQuestion from "./components/deleteQuestion";
+import UpdateQuestion from "./components/updateQuestion";
+import QuestionUpdatingLogic from "./components/QuestionUpdatingLogic";
 
 function App() {
   const dispatch = useDispatch();
   const slicedData = useSelector((state) => state.auth);
- const {isAuthenticated,user,loading} =slicedData;
+  
+  const { isAuthenticated, user, loading } = slicedData;
   console.log(isAuthenticated);
   useEffect(() => {
     dispatch(checkAuth());
@@ -39,6 +40,11 @@ function App() {
         <Route path="/admin/questioncreate" element={<QuestionCreation />} />
         <Route path="/admin/questiondelete" element={<DeleteQuestion />} />
         <Route path="/question/:problemId" element={<ProblemPage />}></Route>
+        <Route path="/admin/updatequestion" element={<UpdateQuestion />} />
+        <Route
+          path="/admin/updatequestion/update/:id"
+          element={<QuestionUpdatingLogic />}
+        />
       </Routes>
     </>
   );

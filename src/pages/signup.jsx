@@ -5,7 +5,7 @@ import { z } from "zod";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { Eye, EyeOff } from "lucide-react"; 
+import { Eye, EyeOff } from "lucide-react";
 import { registerUser } from "../slicers/slice";
 import { Link } from "react-router";
 
@@ -19,6 +19,7 @@ function SignUp() {
   const dispatch = useDispatch();
   const [passwordStrength, setPasswordStrength] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [serverError, setServerError] = useState(""); 
   const navigate = useNavigate();
   const { isAuthenticated, loading } = useSelector((state) => state.auth);
 
@@ -46,6 +47,17 @@ function SignUp() {
     else setPasswordStrength("weak");
   };
 
+  // Submit handler
+  const onSubmit = async (data) => {
+    setServerError("");
+    try {
+      await dispatch(registerUser(data)).unwrap();
+    } catch (err) {
+      console.log("error is called");
+      setServerError(err);
+    }
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-white via-gray-700 to-purple-950">
       <motion.div
@@ -59,20 +71,18 @@ function SignUp() {
         </h1>
 
         <form
-          onSubmit={handleSubmit((data) => dispatch(registerUser(data)))}
+          onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col space-y-4"
         >
-          {/* First Name */}
+          {/* Name */}
           <div>
             <input
               {...register("name")}
-              placeholder="First Name"
+              placeholder="Name"
               className="w-full px-4 py-2 rounded-xl bg-white/20 text-white placeholder-gray-300 outline-none focus:ring-2 focus:ring-indigo-400"
             />
-            {errors.firstName && (
-              <p className="text-red-400 text-sm mt-1">
-                {errors.firstName.message}
-              </p>
+            {errors.name && (
+              <p className="text-red-400 text-sm mt-1">{errors.name.message}</p>
             )}
           </div>
 
@@ -83,9 +93,9 @@ function SignUp() {
               placeholder="Email"
               className="w-full px-4 py-2 rounded-xl bg-white/20 text-white placeholder-gray-300 outline-none focus:ring-2 focus:ring-indigo-400"
             />
-            {errors.emailId && (
+            {errors.email && (
               <p className="text-red-400 text-sm mt-1">
-                {errors.emailId.message}
+                {errors.email.message}
               </p>
             )}
           </div>
@@ -94,12 +104,11 @@ function SignUp() {
           <div className="relative">
             <input
               {...register("password")}
-              type={showPassword ? "text" : "password"} // 👈 toggle type
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               onChange={(e) => checkStrength(e.target.value)}
               className="w-full px-4 py-2 pr-10 rounded-xl bg-white/20 text-white placeholder-gray-300 outline-none focus:ring-2 focus:ring-indigo-400"
             />
-            {/* Eye Toggle */}
             <button
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
@@ -128,6 +137,15 @@ function SignUp() {
             )}
           </div>
 
+          {/* Server Error */}
+          {serverError && (
+            <p className="text-red-400 text-sm font-bold mt-2">
+              {typeof serverError === "string"
+                ? serverError
+                : serverError.message}
+            </p>
+          )}
+
           {/* Submit */}
           <button
             type="submit"
@@ -137,8 +155,9 @@ function SignUp() {
             Sign Up
           </button>
         </form>
+
         <div className="flex text-sm text-gray-300 mt-4 gap-2">
-          <span>already have an account?</span>
+          <span>Already have an account?</span>
           <Link to="/login" className="hover:underline">
             Sign In
           </Link>

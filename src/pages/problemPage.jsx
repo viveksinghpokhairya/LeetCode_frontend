@@ -4,6 +4,7 @@ import Editor from "@monaco-editor/react";
 import { useParams } from "react-router";
 import axiosClient from "../utils/axiosClient";
 import SubmissionHistory from "../components/SubmissionDetails";
+import ChatAI from "../components/chatAI";
 
 const ProblemPage = () => {
   const [problem, setProblem] = useState(null);
@@ -179,12 +180,12 @@ const ProblemPage = () => {
   }
 
   return (
-    <div className="h-screen flex bg-gradient-to-br from-gray-900 via-gray-500 to-purple-950 text-white">
+    <div className="h-screen flex bg-gradient-to-br from-gray-900 via-gray-500 to-blue-950 text-white">
       {/* Left Panel */}
       <div className="w-1/2 flex flex-col border-r border-white/20 backdrop-blur-xl bg-white/10 shadow-lg rounded-2xl m-2">
         {/* Left Tabs */}
         <div className="tabs tabs-bordered bg-white/10 border-b border-white/20 rounded-t-2xl px-4">
-          {["description", "editorial", "solutions", "submissions"].map((tab) => (
+          {["description", "editorial", "solutions", "submissions", "AI"].map((tab) => (
             <button
               key={tab}
               className={`tab text-sm font-medium ${
@@ -310,6 +311,18 @@ const ProblemPage = () => {
                   <div className="text-gray-400">
                     <SubmissionHistory problemId={problemId} />
                   </div>
+                </div>
+              )}
+
+              {activeLeftTab === "AI" && (
+                <div>
+                  <h2 className="text-xl font-bold mb-4 text-blue-300">
+                    AI chat bot
+                  </h2>
+                  {/* <div className="text-gray-400">
+                    <SubmissionHistory problemId={problemId} />
+                  </div> */}
+                  <ChatAI problem={problem}></ChatAI>
                 </div>
               )}
             </>

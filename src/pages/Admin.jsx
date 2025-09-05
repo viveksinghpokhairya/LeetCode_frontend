@@ -22,7 +22,7 @@ function Admin() {
       icon: Edit,
       color: 'btn-warning',
       bgColor: 'bg-warning/10',
-      route: '/admin/update'
+      route: '/admin/updatequestion'
     },
     {
       id: 'delete',
@@ -36,7 +36,7 @@ function Admin() {
   ];
 
   return (
-    <div className="min-h-screen bg-base-200">
+    <div className="flex min-h-screen bg-gradient-to-br from-white via-gray-600 to-purple-950 items-center">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-12">
@@ -44,18 +44,18 @@ function Admin() {
             Admin Panel
           </h1>
           <p className="text-base-content/70 text-lg">
-            Manage coding problems on your platform
+            Managing the coding problems
           </p>
         </div>
 
         {/* Admin Options Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl p-6">
           {adminOptions.map((option) => {
             const IconComponent = option.icon;
             return (
               <div
                 key={option.id}
-                className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
+                className="card rounded-2xl bg-white/10 backdrop-blur-xl border-4 border-white/20 shadow-lg p-6 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
               >
                 <div className="card-body items-center text-center p-8">
                   {/* Icon */}

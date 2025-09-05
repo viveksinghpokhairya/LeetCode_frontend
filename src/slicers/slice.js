@@ -2,15 +2,20 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axiosClient from '../utils/axiosClient'
 
 export const registerUser = createAsyncThunk(
-    'auth/register',
-    async (userData, { rejectWithValue }) => {
-        try {
-            const response = await axiosClient.post('/user/register', userData);
-            return response.data.user;
-        } catch (error) {
-            return rejectWithValue(error);
-        }
+  "auth/register",
+  async (userData, { rejectWithValue }) => {
+    try {
+      console.log("hello from slice");
+      const response = await axiosClient.post("/user/register", userData);
+      console.log(response);
+      return response.data.user;
+    } catch (error) {
+      // Return the actual backend error string
+      return rejectWithValue(
+        error.response?.data || "Something went wrong"
+      );
     }
+  }
 );
 
 export const loginUser = createAsyncThunk(
