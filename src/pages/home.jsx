@@ -115,7 +115,7 @@ function Homepage() {
         {/* Filters */}
         <div className="flex flex-wrap gap-4 mb-10 justify-center">
           <select
-            className="select select-bordered bg-white/10 backdrop-blur-lg border border-white/30 text-white rounded-xl shadow-lg"
+            className="select select-bordered bg-white/10 backdrop-blur-lg border border-white/30 text-black rounded-xl shadow-lg"
             value={filters.status}
             onChange={(e) => setFilters({ ...filters, status: e.target.value })}
           >
@@ -125,7 +125,7 @@ function Homepage() {
           </select>
 
           <select
-            className="select select-bordered bg-white/10 backdrop-blur-lg border border-white/30 text-white rounded-xl shadow-lg"
+            className="select select-bordered bg-white/10 backdrop-blur-lg border border-white/30 text-black rounded-xl shadow-lg"
             value={filters.difficulty}
             onChange={(e) => setFilters({ ...filters, difficulty: e.target.value })}
           >
@@ -136,7 +136,7 @@ function Homepage() {
           </select>
 
           <select
-            className="select select-bordered bg-white/10 backdrop-blur-lg border border-white/30 text-white rounded-xl shadow-lg"
+            className="select select-bordered bg-white/10 backdrop-blur-lg border border-white/30 text-black rounded-xl shadow-lg"
             value={filters.tag}
             onChange={(e) => setFilters({ ...filters, tag: e.target.value })}
           >

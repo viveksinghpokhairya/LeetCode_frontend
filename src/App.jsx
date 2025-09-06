@@ -11,11 +11,13 @@ import ProblemPage from "./pages/problemPage";
 import DeleteQuestion from "./components/deleteQuestion";
 import UpdateQuestion from "./components/updateQuestion";
 import QuestionUpdatingLogic from "./components/QuestionUpdatingLogic";
+import AdminVideopage from "./components/Videopage";
+import UploadVideo from "./components/uploadVideo";
 
 function App() {
   const dispatch = useDispatch();
   const slicedData = useSelector((state) => state.auth);
-  
+
   const { isAuthenticated, user, loading } = slicedData;
   console.log(isAuthenticated);
   useEffect(() => {
@@ -45,9 +47,11 @@ function App() {
           path="/admin/updatequestion/update/:id"
           element={<QuestionUpdatingLogic />}
         />
+        <Route path="/admin/video" element={<AdminVideopage />} />
+        <Route path="/admin/video/update/:id" element={<UploadVideo />} />
       </Routes>
     </>
   );
-}
+} 
 
 export default App;

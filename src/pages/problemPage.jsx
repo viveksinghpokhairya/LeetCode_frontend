@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import axiosClient from "../utils/axiosClient";
 import SubmissionHistory from "../components/SubmissionDetails";
 import ChatAI from "../components/chatAI";
+import Editorial from "../components/Editorials";
 
 const ProblemPage = () => {
   const [problem, setProblem] = useState(null);
@@ -48,6 +49,9 @@ const ProblemPage = () => {
           })?.initialCode || "";
 
         setProblem(response.data);
+        // console.log(response.data);
+        // console.log("this the response data", response)
+        // console.log("this is the problem details",problem)
         setCode(initialCode);
         setLoading(false);
       } catch (error) {
@@ -269,7 +273,7 @@ const ProblemPage = () => {
                     Editorial
                   </h2>
                   <div className="whitespace-pre-wrap text-sm leading-relaxed text-gray-200">
-                    Editorial is here for the problem
+                    <Editorial secureUrl={problem.secureUrl} thumbnailUrl={problem.thumbnailUrl} duration={problem.duration}></Editorial>
                   </div>
                 </div>
               )}
@@ -455,7 +459,7 @@ const ProblemPage = () => {
                   <div>
                     {runResult.success ? (
                       <div>
-                        <h4 className="font-bold">✅ All test cases passed!</h4>
+                        <h4 className="font-bold">All test cases passed!</h4>
                         <p className="text-sm mt-2">Runtime: {runResult.runtime+" sec"}</p>
                         <p className="text-sm">Memory: {runResult.memory+" KB"}</p>
                         
@@ -476,7 +480,7 @@ const ProblemPage = () => {
                       </div>
                     ) : (
                       <div>
-                        <h4 className="font-bold">❌ Error</h4>
+                        <h4 className="font-bold">Error</h4>
                         <div className="mt-4 space-y-2">
                           {runResult.testCases.map((tc, i) => (
                             <div key={i} className="bg-base-100 p-3 rounded text-xs">
@@ -517,7 +521,7 @@ const ProblemPage = () => {
                   <div>
                     {submitResult.accepted ? (
                       <div>
-                        <h4 className="font-bold text-lg">🎉 Accepted</h4>
+                        <h4 className="font-bold text-lg">Accepted</h4>
                         <div className="mt-4 space-y-2">
                           <p>Test Cases Passed: {submitResult.testCasesPassed}/{submitResult.testCasesTotal}</p>
                           <p>Runtime: {submitResult.runtime + " sec"}</p>
@@ -526,7 +530,7 @@ const ProblemPage = () => {
                       </div>
                     ) : (
                       <div>
-                        <h4 className="font-bold text-lg">❌ {submitResult.error}</h4>
+                        <h4 className="font-bold text-lg">{submitResult.error}</h4>
                         <div className="mt-4 space-y-2">
                           <p>Test Cases Passed: {submitResult.testCasesPassed}/{submitResult.testCasesTotal}</p>
                         </div>
